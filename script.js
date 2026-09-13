@@ -44,13 +44,16 @@
     // Opening the portfolio never waits for the music to download or play.
     entrance.classList.add('leaving');
     entrance.inert = true;
-    behindEntrance.forEach(el => { el.inert = false; });
-    soundButton.classList.add('visible');
-    document.querySelector('nav .brand').focus({ preventScroll: true });
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.documentElement.classList.add('revealing-portfolio');
     window.setTimeout(() => {
       entrance.hidden = true;
+      behindEntrance.forEach(el => { el.inert = false; });
+      soundButton.classList.add('visible');
+      document.querySelector('nav .brand').focus({ preventScroll: true });
       document.documentElement.classList.remove('entrance-active');
-    }, 360);
+      document.documentElement.classList.remove('revealing-portfolio');
+    }, reducedMotion ? 0 : 1050);
     void playMusic();
   });
   soundButton.addEventListener('click', () => {
