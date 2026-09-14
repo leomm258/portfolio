@@ -188,3 +188,5 @@ footer{width:min(1160px,calc(100% - 72px));margin:0 auto;min-height:120px;displa
 @media(max-width:760px){.game-impact{padding:0 17px 18px}.game-stats{gap:12px}.game-stats dd{font-size:clamp(25px,6vw,38px)}.game-stats dt{font-size:8px;letter-spacing:.6px}}
 
 .hero{scroll-margin-top:130px}
+
+.contact-options{display:flex;flex-wrap:wrap;justify-content:center;gap:16px}.email-contact{font-size:16px;padding:17px 28px;background:#fff5ec;color:var(--rose);box-shadow:none}@media(max-width:760px){.contact-options{flex-direction:column}.email-contact{width:100%;font-size:14px;padding-inline:12px}}

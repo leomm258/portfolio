@@ -38,7 +38,8 @@
     updateSound();
   }
   function pauseMusic() { ++playRequest; audio.pause(); updateSound(); }
-  enterButton.addEventListener('click', () => {
+  enterButton.addEventListener('click', (event) => {
+    const keyboardEntry = event.detail === 0;
     if (entered) return;
     entered = true;
     // Opening the portfolio never waits for the music to download or play.
@@ -50,7 +51,7 @@
       entrance.hidden = true;
       behindEntrance.forEach(el => { el.inert = false; });
       soundButton.classList.add('visible');
-      document.querySelector('nav .brand').focus({ preventScroll: true });
+      if (keyboardEntry) document.querySelector('nav .brand').focus({ preventScroll: true });
       document.documentElement.classList.remove('entrance-active');
       document.documentElement.classList.remove('revealing-portfolio');
     }, reducedMotion ? 0 : 1050);
