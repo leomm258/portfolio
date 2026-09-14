@@ -19,7 +19,7 @@
   document.documentElement.classList.add('entrance-active');
   const behindEntrance = [...document.querySelector('main').children].filter(el => el !== entrance && el !== audio);
   behindEntrance.forEach(el => { el.inert = true; });
-  enterButton.focus({ preventScroll: true });
+
   function updateSound() {
     const playing = !audio.paused && !audio.muted && !document.hidden;
     soundButton.textContent = playing ? 'SOUND ON' : 'SOUND OFF';
@@ -38,8 +38,7 @@
     updateSound();
   }
   function pauseMusic() { ++playRequest; audio.pause(); updateSound(); }
-  enterButton.addEventListener('click', (event) => {
-    const keyboardEntry = event.detail === 0;
+  enterButton.addEventListener('click', () => {
     if (entered) return;
     entered = true;
     // Opening the portfolio never waits for the music to download or play.
@@ -51,7 +50,7 @@
       entrance.hidden = true;
       behindEntrance.forEach(el => { el.inert = false; });
       soundButton.classList.add('visible');
-      if (keyboardEntry) document.querySelector('nav .brand').focus({ preventScroll: true });
+
       document.documentElement.classList.remove('entrance-active');
       document.documentElement.classList.remove('revealing-portfolio');
     }, reducedMotion ? 0 : 1050);
@@ -68,31 +67,33 @@
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) pauseMusic(); else void playMusic();
   });
-  discord.addEventListener('click', async () => {
-    let copied = false;
-    try {
-      await navigator.clipboard.writeText(username);
-      copied = true;
-    } catch {
-      const field = document.createElement('textarea');
-      field.value = username;
-      field.setAttribute('readonly', '');
-      field.style.cssText = 'position:fixed;left:-9999px;top:0';
-      document.body.appendChild(field);
-      field.select();
-      try { copied = document.execCommand('copy'); } catch {}
-      field.remove();
-      discord.focus({ preventScroll: true });
-    }
-    status.textContent = copied ? 'Discord username copied: leorizoto' : 'Add me on Discord: leorizoto';
-    status.hidden = false;
-    discord.textContent = copied ? 'USERNAME COPIED ✓' : 'DISCORD · leorizoto';
-    clearTimeout(copyTimer);
-    copyTimer = window.setTimeout(() => {
-      discord.textContent = 'DISCORD · leorizoto ↗';
-      status.textContent = '';
-      status.hidden = true;
-    }, 2500);
-  });
+  function bindCopy(button, value, label) {
+    const feedback = button.querySelector('.contact-hint');
+    let resetTimer;
+    button.addEventListener('click', async () => {
+      let copied = false;
+      try { await navigator.clipboard.writeText(value); copied = true; }
+      catch {
+        const field = document.createElement('textarea');
+        field.value = value;
+        field.setAttribute('readonly', '');
+        field.style.cssText = 'position:fixed;left:-9999px;top:0';
+        document.body.appendChild(field); field.select();
+        try { copied = document.execCommand('copy'); } catch {}
+        field.remove();
+      }
+      feedback.textContent = copied ? 'Copied ✓' : 'Select and copy: ' + value;
+      button.classList.toggle('copied', copied);
+      status.textContent = copied ? label + ' copied: ' + value : label + ': ' + value;
+      status.hidden = false;
+      clearTimeout(resetTimer); clearTimeout(copyTimer);
+      resetTimer = window.setTimeout(() => {
+        feedback.textContent = 'Click to copy'; button.classList.remove('copied');
+      }, 2500);
+      copyTimer = window.setTimeout(() => { status.hidden = true; status.textContent = ''; }, 2500);
+    });
+  }
+  bindCopy(discord, username, 'Discord username');
+  bindCopy(document.querySelector('.email-contact'), 'contact@leorizoto.fr', 'Email');
   updateSound();
 })();
