@@ -1,0 +1,49 @@
+name: Refresh game statistics
+on:
+  schedule:
+    - cron: '3-58/5 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['update-game-stats.mjs', '.github/workflows/game-stats.yml']
+permissions:
+  contents: write
+concurrency:
+  group: game-statistics
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Collect a validated snapshot
+        shell: bash
+        run: |
+          if git ls-remote --exit-code --heads origin game-stats >/dev/null; then
+            git fetch origin game-stats
+            git show FETCH_HEAD:game-stats.json > /tmp/previous-game-stats.json
+          else
+            cp game-stats.json /tmp/previous-game-stats.json
+          fi
+          node update-game-stats.mjs /tmp/game-stats.json /tmp/previous-game-stats.json
+      - name: Publish the statistics feed
+        shell: bash
+        run: |
+          if git ls-remote --exit-code --heads origin game-stats >/dev/null; then
+            git fetch origin game-stats:refs/remotes/origin/game-stats
+            git switch --create game-stats origin/game-stats
+          else
+            git switch --orphan game-stats
+          fi
+          cp /tmp/game-stats.json game-stats.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add game-stats.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Refresh Roblox game statistics'
+            git push origin HEAD:game-stats
+          fi
