@@ -195,3 +195,9 @@ footer{width:min(1160px,calc(100% - 72px));margin:0 auto;min-height:120px;displa
 
 /* Game reach and periodically refreshed concurrent players. */
 .game-stats{grid-template-columns:repeat(4,minmax(0,1fr))}.game-stats dd{font-size:clamp(26px,3.2vw,44px)}.ccu-stat dd{color:#77304f}.ccu-stat dt:before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:#598169;margin-right:6px}.stats-updated{margin:0 0 10px;font:400 11px/1.6 Outfit,sans-serif;color:#795462}.stats-stale .ccu-stat dt:before{background:#af8d68}@media(max-width:760px){.game-stats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:24px}.game-stats dd{font-size:34px}.game-stats dt{font-size:9px}}
+.private-admin[hidden]{display:none!important}
+.private-admin{position:fixed;left:18px;bottom:18px;z-index:10000;display:flex;align-items:center;gap:3px;padding:5px;border:1px solid #d68da6;border-radius:999px;background:#fff3ef;box-shadow:0 5px 20px #9c45651c;color:#a63f65;font-family:Outfit,sans-serif}
+.private-admin a{padding:8px 10px 8px 14px;text-decoration:none;font-size:11px;font-weight:700;letter-spacing:1px;color:inherit}
+.private-admin button{display:grid;place-items:center;width:32px;height:32px;border:0;border-radius:50%;background:#f6dce4;color:inherit;font:22px/1 Outfit,sans-serif;cursor:pointer}
+.private-admin button:hover{background:#efc5d4}
+.private-admin :focus-visible{outline:2px solid #a63f65;outline-offset:2px}
