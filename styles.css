@@ -48,10 +48,10 @@ h2 span{color:var(--rose)}
 .projects article{height:100%;border:1px solid #fff8f0;border-radius:var(--radius);padding:9px;background:#fff0e9bd;box-shadow:0 8px 20px #7e324e0b;overflow:hidden;transition:transform .22s}
 .showcase-link:hover article{transform:translateY(-5px)}
 .visual{position:relative;display:grid;place-items:center;height:225px;border-radius:24px;overflow:hidden;background:radial-gradient(ellipse at 65% 30%,#fff5ed,transparent 60%),linear-gradient(140deg,#efd0c4,#ebb1c6)}
-.showcase-link:nth-child(2) .visual{background:radial-gradient(ellipse at 65% 30%,#fff5ed,transparent 60%),linear-gradient(140deg,#f2c5d1,#e9b1c8)}
+.showcase-link[href*="85839579546169"] .visual{background:radial-gradient(ellipse at 65% 30%,#fff5ed,transparent 60%),linear-gradient(140deg,#f2c5d1,#e9b1c8)}
 .visual>span{position:absolute;top:16px;left:18px;font-size:12px;letter-spacing:1px;color:#8b3656;background:#fff5ebb8;border-radius:100px;padding:5px 10px}
 .card-jewel{width:140px;height:140px;object-fit:contain;transform:rotate(-8deg);transition:transform .22s}
-.showcase-link:nth-child(2) .card-jewel{width:160px;height:160px;transform:rotate(8deg)}
+.showcase-link[href*="85839579546169"] .card-jewel{width:160px;height:160px;transform:rotate(8deg)}
 .showcase-link:hover .card-jewel{transform:translateY(-5px) rotate(0)}
 .visual em{position:absolute;bottom:14px;right:15px;color:#7e3452;background:#fff3e9e6;border:1px solid #fff8ef;border-radius:100px;padding:6px 11px;font-size:10px;font-style:normal;font-weight:600;letter-spacing:.5px}
 .mini{display:none}

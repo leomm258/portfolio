@@ -87,8 +87,10 @@
   document.head.append(tracker);
 
   const projects = [
-    { selector: '.project-cta', card: '.featured-game .project-copy',
+    { selector: '.project-cta[href*="95082159892680"]', card: '.featured-game:not(.read-my-mind) .project-copy',
       project: '+1 Speed Keyboard Escape', category: 'Game' },
+    { selector: '.project-cta[href*="117165613976753"]', card: '.read-my-mind .project-copy',
+      project: 'Read My Mind', category: 'Game' },
     { selector: '.showcase-link[href*="85839579546169"]',
       project: 'Cooking game', category: 'Showcase' },
     { selector: '.showcase-link[href*="116627717607931"]',
