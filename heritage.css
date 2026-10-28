@@ -181,3 +181,4 @@ a:hover>.rose-arrow,a:hover>span>.rose-arrow,.project-card:hover .card-arrow .ro
 @media(max-width:760px){.next-project>a>span .rose-arrow{width:32px;height:32px}.end-note b .rose-arrow{width:48px;height:48px}.expertise-list b .rose-arrow{width:21px;height:21px}}
 @media(prefers-reduced-motion:reduce){.rose-arrow{transition:none}a:hover>.rose-arrow,a:hover>span>.rose-arrow,.project-card:hover .card-arrow .rose-arrow{transform:none}}
 #enter-button .enter-arrow{width:26px;height:26px;transform:rotate(45deg)}
+.hero .primary>b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#fff2e8}.hero .work-arrow{width:22px;height:22px;transform:rotate(135deg)}.hero .rose-play{width:22px;height:22px;object-fit:contain;filter:drop-shadow(0 2px 2px #85345016)}

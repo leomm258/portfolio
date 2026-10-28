@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="rose" x1="17" y1="10" x2="47" y2="53" gradientUnits="userSpaceOnUse"><stop stop-color="#FFEAF2"/><stop offset=".24" stop-color="#EE9FBE"/><stop offset=".52" stop-color="#B53668"/><stop offset=".78" stop-color="#D45C8B"/><stop offset="1" stop-color="#852B51"/></linearGradient>
+    <linearGradient id="edge" x1="18" y1="10" x2="45" y2="52" gradientUnits="userSpaceOnUse"><stop stop-color="#FFF6F9"/><stop offset=".5" stop-color="#E8A4BF"/><stop offset="1" stop-color="#A9446C"/></linearGradient>
+  </defs>
+  <path d="M20 10c-3-2-6 0-6 4v40c0 4 3 6 6 4l33-20c4-2 4-6 0-8L20 10Z" fill="#823052" opacity=".12"/>
+  <path d="M20 8c-3-2-6 0-6 4v40c0 4 3 6 6 4l33-20c4-2 4-6 0-8L20 8Z" fill="url(#rose)" stroke="url(#edge)" stroke-width="1.5" stroke-linejoin="round"/>
+  <path d="M18 15v29M23 13l23 14" stroke="#FFE8F3" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+</svg>
