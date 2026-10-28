@@ -180,3 +180,4 @@ h1,h2,h3{font-weight:800;letter-spacing:-.045em}h1 em,h2 em,.end-note em{font-st
 a:hover>.rose-arrow,a:hover>span>.rose-arrow,.project-card:hover .card-arrow .rose-arrow{transform:translate(1px,-1px)}
 @media(max-width:760px){.next-project>a>span .rose-arrow{width:32px;height:32px}.end-note b .rose-arrow{width:48px;height:48px}.expertise-list b .rose-arrow{width:21px;height:21px}}
 @media(prefers-reduced-motion:reduce){.rose-arrow{transition:none}a:hover>.rose-arrow,a:hover>span>.rose-arrow,.project-card:hover .card-arrow .rose-arrow{transform:none}}
+#enter-button .enter-arrow{width:26px;height:26px;transform:rotate(45deg)}
