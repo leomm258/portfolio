@@ -172,3 +172,11 @@ h1,h2,h3{font-weight:800;letter-spacing:-.045em}h1 em,h2 em,.end-note em{font-st
 .primary{display:inline-flex;align-items:center;justify-content:center;gap:24px;border:1px solid #b53e66;border-radius:100px;background:linear-gradient(120deg,#a73560,#c95779);color:white;font-size:14px;font-weight:600;line-height:1.4;padding:15px 23px;box-shadow:0 6px 16px #9d315b18;transition:transform .2s}.primary:hover{transform:translateY(-3px)}.primary:active{transform:translateY(0)}
 @media(max-width:760px){.hero .primary{font-size:12px;padding:14px 19px}}
 .contact-link[aria-current]{background:linear-gradient(120deg,#a73560,#c95779);border-color:#b53e66;color:white}
+/* Section labels must stay sized to their text inside grid layouts. */
+.eyebrow{align-self:start;justify-self:start;width:fit-content}
+/* Glossy vector arrows echo the pink glass stickers. */
+.rose-arrow{display:inline-block;width:26px;height:26px;object-fit:contain;vertical-align:middle;flex-shrink:0;transition:transform .2s ease;filter:drop-shadow(0 2px 2px #85345016)}
+.button .rose-arrow,.contact-link .rose-arrow{width:23px;height:23px}.card-arrow .rose-arrow{width:25px;height:25px}.text-link .rose-arrow{width:21px;height:21px}.expertise-list b .rose-arrow{width:25px;height:25px;max-width:none}.next-project>a>span .rose-arrow{width:46px;height:46px}.end-note b .rose-arrow{width:76px;height:76px}footer>a:last-child .rose-arrow{width:17px;height:17px;margin-left:4px}
+a:hover>.rose-arrow,a:hover>span>.rose-arrow,.project-card:hover .card-arrow .rose-arrow{transform:translate(1px,-1px)}
+@media(max-width:760px){.next-project>a>span .rose-arrow{width:32px;height:32px}.end-note b .rose-arrow{width:48px;height:48px}.expertise-list b .rose-arrow{width:21px;height:21px}}
+@media(prefers-reduced-motion:reduce){.rose-arrow{transition:none}a:hover>.rose-arrow,a:hover>span>.rose-arrow,.project-card:hover .card-arrow .rose-arrow{transform:none}}
