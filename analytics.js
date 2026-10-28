@@ -24,7 +24,9 @@
   let clicks = [];
   close.addEventListener('click', () => { admin.hidden = true; clicks = []; });
   document.addEventListener('click', event => {
-    if (!event.target.closest('nav .brand, .entrance-signature')) return;
+    if (!event.target.closest('nav .brand')) return;
+    if (/\/(?:index\.html)?$/.test(location.pathname)) event.preventDefault();
+    else return;
     const now = performance.now();
     clicks = clicks.filter(time => now - time <= 1800);
     clicks.push(now);
@@ -35,6 +37,11 @@
   if (location.hostname !== 'leorizoto.fr' || location.protocol !== 'https:' ||
       !/^[0-9a-f-]{36}$/.test(websiteId)) return;
 
+  const pages = ['index.html','projects.html','about.html','contact.html','keyboard-escape.html','read-my-mind.html','cooking-game.html','modern-menu.html'];
+  const file = location.pathname.split('/').pop() || 'index.html';
+  if (!pages.includes(file)) return;
+  const pageUrl = file === 'index.html' ? '/' : '/' + file;
+  if (file === 'index.html' && ['#projects','#about','#skills','#contact'].includes(location.hash)) return;
   let ready = false;
   let stopped = false;
   let sending = false;
@@ -53,7 +60,7 @@
         // Explicit payload: never send query strings, hashes, referrers, copied
         // contact details, text input, or a visitor identifier.
         await timeout(window.umami.track({
-          website: websiteId, hostname: 'leorizoto.fr', url: '/',
+          website: websiteId, hostname: 'leorizoto.fr', url: pageUrl,
           title: 'leorizoto — Roblox Developer', referrer: '',
           language: navigator.language, screen: `${screen.width}x${screen.height}`,
           ...event,
@@ -86,73 +93,49 @@
   tracker.onerror = () => { clearTimeout(loadingTimeout); stop(); };
   document.head.append(tracker);
 
-  const projects = [
-    { selector: '.project-cta[href*="95082159892680"]', card: '.featured-game:not(.read-my-mind) .project-copy',
-      project: '+1 Speed Keyboard Escape', category: 'Game' },
-    { selector: '.project-cta[href*="117165613976753"]', card: '.read-my-mind .project-copy',
-      project: 'Read My Mind', category: 'Game' },
-    { selector: '.showcase-link[href*="85839579546169"]',
-      project: 'Cooking game', category: 'Showcase' },
-    { selector: '.showcase-link[href*="116627717607931"]',
-      project: 'Modern menu', category: 'Showcase' },
-  ];
+  const projects = {
+    'keyboard-escape': {project:'+1 Speed Keyboard Escape',category:'Game'},
+    'read-my-mind': {project:'Read My Mind',category:'Game'},
+    'cooking-game': {project:'Cooking game',category:'Showcase'},
+    'modern-menu': {project:'Modern menu',category:'Showcase'},
+  };
   document.addEventListener('click', event => {
-    const target = event.target;
-    for (const { selector, project, category } of projects) {
-      if (target.closest(selector)) { track('project_open', { project, category }); return; }
+    const card = event.target.closest('[data-project]');
+    if (card && projects[card.dataset.project]) { track('project_open',projects[card.dataset.project]); return; }
+    if (event.target.closest('.discord')) track('contact_click',{method:'Discord'});
+    else if (event.target.closest('.email-contact')) track('contact_click',{method:'Email'});
+    else {
+      const link=event.target.closest('a[data-external], .stats-sources a');
+      if (link) {
+        const current=projects[file.replace('.html','')];
+        const destination=link.dataset.external ? 'Roblox game' : link.href.includes('rolimons.com') ? 'Rolimons statistics' : 'Roblox statistics';
+        track('external_link',{destination,...(current||{})});
+      }
     }
-    if (target.closest('.discord')) track('contact_click', { method: 'Discord' });
-    else if (target.closest('.email-contact')) track('contact_click', { method: 'Email' });
-    else if (target.closest('.stats-sources a[href^="https://games.roblox.com/"]'))
-      track('external_link', { destination: 'Roblox statistics' });
-    else if (target.closest('.stats-sources a[href^="https://www.rolimons.com/"]'))
-      track('external_link', { destination: 'Rolimons statistics' });
   });
-
-  // A category is seen once per page load, after 600 ms of visible content.
-  // Decorative images are deliberately not gallery views: this site has no gallery.
-  const seen = new Set();
-  const timers = new Map();
-  const visible = new Set();
-  function clearTimers() { timers.forEach(clearTimeout); timers.clear(); }
-  function schedule(element) {
-    const category = element.dataset.analyticsCategory;
-    if (document.hidden || seen.has(category) || timers.has(element)) return;
-    timers.set(element, setTimeout(() => {
-      timers.delete(element);
-      if (!document.hidden && visible.has(element) && !seen.has(category)) {
-        seen.add(category);
-        track('category_view', { category });
+  // Count visible categories once per document, including after filter changes.
+  const seen = new Set(), timers = new Map(), visible = new Set();
+  function schedule(el) {
+    const category=el.dataset.category;
+    if (document.hidden || seen.has(category) || timers.has(el)) return;
+    timers.set(el,setTimeout(() => {
+      timers.delete(el);
+      if (!document.hidden && !el.hidden && visible.has(el) && !seen.has(category)) {
+        seen.add(category); track('category_view',{category});
       }
-    }, 600));
+    },600));
   }
-  function observeCategories() {
-    if (!('IntersectionObserver' in window)) return;
-    const observer = new IntersectionObserver(entries => {
-      for (const entry of entries) {
-        if (entry.isIntersecting && entry.intersectionRatio >= 0.25) {
-          visible.add(entry.target); schedule(entry.target);
-        } else {
-          visible.delete(entry.target);
-          clearTimeout(timers.get(entry.target)); timers.delete(entry.target);
-        }
-      }
-    }, { threshold: [0, 0.25] });
-    for (const { selector, card, category } of projects) {
-      const element = document.querySelector(card || `${selector} .project-copy`);
-      if (element) { element.dataset.analyticsCategory = category; observer.observe(element); }
-    }
-    document.addEventListener('visibilitychange', () => {
-      clearTimers();
+  if ('IntersectionObserver' in window) {
+    const observer=new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio>=.25) {visible.add(entry.target);schedule(entry.target);}
+        else {visible.delete(entry.target);clearTimeout(timers.get(entry.target));timers.delete(entry.target);}
+      });
+    },{threshold:[0,.25]});
+    document.querySelectorAll('.project-card[data-category]').forEach(el=>observer.observe(el));
+    document.addEventListener('visibilitychange',()=>{
+      timers.forEach(clearTimeout);timers.clear();
       if (!document.hidden) visible.forEach(schedule);
     });
-  }
-  const entrance = document.getElementById('enter-screen');
-  if (!entrance || entrance.hidden) observeCategories();
-  else {
-    const entranceObserver = new MutationObserver(() => {
-      if (entrance.hidden) { entranceObserver.disconnect(); observeCategories(); }
-    });
-    entranceObserver.observe(entrance, { attributes: true, attributeFilter: ['hidden'] });
   }
 })();
