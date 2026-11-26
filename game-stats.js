@@ -6,15 +6,19 @@
   const exact = new Intl.NumberFormat('en-US');
   let snapshot;
   let inFlight = false;
+  // Optional parts: the home page shows a compact strip without the status line or sources.
   const status = root.querySelector('.stats-updated');
+  const ccuLabel = root.querySelector('[data-ccu-label]');
+  const peakDetail = root.querySelector('[data-peak-detail]');
   function ageLabel() {
     if (!snapshot) return;
     const minutes = Math.max(0, Math.floor((Date.now() - Date.parse(snapshot.updatedAt)) / 60000));
     const stale = minutes > 20;
     root.classList.toggle('stats-stale', stale);
+    if (ccuLabel) ccuLabel.textContent = stale ? (ccuLabel.dataset.stale || 'PLAYERS · LAST SNAPSHOT') : (ccuLabel.dataset.live || 'PLAYERS ONLINE · CCU');
+    if (!status) return;
     status.textContent = `${stale ? 'Last available snapshot' : 'Updated'} · ${minutes < 1 ? 'just now' : minutes < 60 ? `${minutes} min ago` : new Date(snapshot.updatedAt).toLocaleString()}${stale ? '' : ' · Auto refresh'}`;
     status.title = new Date(snapshot.updatedAt).toLocaleString();
-    root.querySelector('[data-ccu-label]').textContent = stale ? 'PLAYERS · LAST SNAPSHOT' : 'PLAYERS ONLINE · CCU';
   }
   function render(data) {
     if (data?.universeId !== 9584852943 || !['playing', 'visits', 'favorites'].every(key => Number.isSafeInteger(data[key]) && data[key] >= 0)) throw new Error('Invalid snapshot');
@@ -23,14 +27,15 @@
     snapshot = data;
     for (const key of ['playing', 'visits', 'favorites']) {
       const el = root.querySelector(`[data-stat="${key}"]`);
+      if (!el) continue;
       el.textContent = compact.format(data[key]);
       el.title = exact.format(data[key]);
       el.setAttribute('aria-label', exact.format(data[key]));
     }
     if (Number.isSafeInteger(data.peak?.count) && data.peak.count > 0) {
-      root.querySelector('[data-stat="peak"]').textContent = compact.format(data.peak.count);
-      root.querySelector('[data-stat="peak"]').title = exact.format(data.peak.count);
-      root.querySelector('[data-peak-detail]').textContent = `${exact.format(data.peak.count)} concurrent players · ${data.peak.date}`;
+      const peak = root.querySelector('[data-stat="peak"]');
+      if (peak) { peak.textContent = compact.format(data.peak.count); peak.title = exact.format(data.peak.count); }
+      if (peakDetail) peakDetail.textContent = `${exact.format(data.peak.count)} concurrent players · ${data.peak.date}`;
     }
     ageLabel();
   }
@@ -49,7 +54,7 @@
         } catch {}
       }
       if (snapshot) ageLabel();
-      else status.textContent = 'Automatic update unavailable · showing the dated snapshot below';
+      else if (status) status.textContent = 'Automatic update unavailable · showing the dated snapshot below';
     } finally { inFlight = false; }
   }
   refresh();
