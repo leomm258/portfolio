@@ -18,10 +18,6 @@ nav{position:sticky;top:16px;z-index:20;display:flex;align-items:center;justify-
 .profile-halo{position:absolute;inset:30px 20px;background:linear-gradient(145deg,#fff2e9ab,#e59db4a8);border:1px solid #fff4eacb;border-radius:48% 52% 46% 54%;transform:rotate(-9deg)}
 .profile-cluster>img{position:relative;width:180px;height:180px;border:6px solid #fff3e9;border-radius:50%;object-fit:cover;box-shadow:0 14px 32px #983e5b24;transform:rotate(3deg)}
 
-
-
-
-
 .entrance-active{overflow:hidden}
 .enter-screen{position:fixed;inset:0;z-index:100;isolation:isolate;display:grid;align-items:center;background:#f6d9d1;overflow:auto;padding:44px 8vw;transition:opacity .35s ease}
 .enter-screen[hidden]{display:none}
@@ -78,10 +74,6 @@ nav{position:sticky;top:16px;z-index:20;display:flex;align-items:center;justify-
 .profile-halo{display:none}
 .portrait-label{position:absolute;bottom:32px;font-size:10px;letter-spacing:2px;font-weight:600;color:#8b3e59}
 
-
-
-
-
 .navlinks{font-size:13px}
 .navlinks a{padding-inline:13px}
 .enter-screen{padding:50px 8vw;background:transparent;transition:none;overflow:hidden}
@@ -110,19 +102,12 @@ nav{position:sticky;top:16px;z-index:20;display:flex;align-items:center;justify-
 .profile-cluster{width:280px;height:360px;top:170px;right:5%}
 .profile-cluster>img:not(.portrait-scene){width:150px;height:150px}
 
-
-
-
 }
 @media(max-width:760px){.hero{padding:55px 28px 45px;min-height:0}
 .hero h1{font-size:clamp(54px,11vw,80px)}
 .profile-cluster{position:relative;top:auto;right:auto;width:270px;height:330px;max-width:calc(100% - 30px);margin:45px auto 16px}
 .profile-cluster>img:not(.portrait-scene){width:145px;height:145px}
 .portrait-label{font-size:8px;bottom:26px}
-
-
-
-
 
 .navlinks{gap:0;justify-content:space-between}
 .navlinks a{padding:5px 8px;font-size:12px}
@@ -237,22 +222,17 @@ footer>a:last-child{font-size:13px}
 .stats-stale .proof-stats .ccu-stat dd{color:var(--muted)}
 .stats-stale .proof-stats .ccu-stat dt:before{background:#c58b9f;box-shadow:none}
 
-/* Behind the code: concrete skills next to a real Luau sample. */
-.home-about{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center}
-.home-about h2{margin-top:18px;color:var(--ink);font-size:clamp(36px,3.5vw,50px)}
+/* Behind the code: title on the left, concrete skills on the right. */
+.home-about{display:block}
+.home-about-copy{display:grid;grid-template-columns:1fr 1.1fr;grid-template-areas:"tag list" "title list" "link list";column-gap:72px;align-items:start}
+.home-about .eyebrow{grid-area:tag;justify-self:start}
+.home-about .craft-list{grid-area:list;margin:0;align-self:center}
+.home-about .text-link{grid-area:link;justify-self:start}
+.home-about h2{grid-area:title;margin-top:18px;color:var(--ink);font-size:clamp(36px,3.5vw,50px)}
 .craft-list{list-style:none;padding:0;margin:30px 0 26px}
 .craft-list li{display:grid;grid-template-columns:180px 1fr;gap:16px;padding:15px 0;border-top:1px solid #d994ad55;font-size:15px;line-height:1.5}
 .craft-list li:last-child{border-bottom:1px solid #d994ad55}
 .craft-list b{font-weight:600;color:var(--ink)}
-.code-card{margin:0;overflow:hidden;border:1px solid #ffffff22;border-radius:28px;background:linear-gradient(150deg,#4b2239,#2c1424);box-shadow:0 26px 50px #6b2a443b;rotate:1.5deg}
-.code-bar{display:flex;align-items:center;gap:7px;padding:15px 20px;border-bottom:1px solid #ffffff17;font-size:12px;color:#f3c6d6}
-.code-bar i{width:11px;height:11px;border-radius:50%;background:#f28bb0}
-.code-bar i:nth-child(2){background:#f7c08f}
-.code-bar i:nth-child(3){background:#f9e3ea}
-.code-bar span{margin-left:10px;letter-spacing:.3px}
-.code-card pre{margin:0;padding:22px 24px 14px;overflow-x:auto;font:13.5px/1.75 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#fbe4ec;tab-size:3}
-.tk-k{color:#ff8fba}.tk-t{color:#ffcfa9}.tk-c{color:#b9879c}.tk-f{color:#fff}.tk-n{color:#ffd77e}
-.code-card figcaption{padding:0 24px 20px;font-size:12px;color:#d6a6b9}
 
 /* Contact band: one strong closing call to action. */
 .end-note{position:relative;isolation:isolate;overflow:hidden;margin-block:24px 64px;padding:52px 56px;border:1px solid #c95779;border-radius:40px;background:linear-gradient(125deg,#a73560,#d46585);color:#fff6f0;box-shadow:0 22px 44px #9d315b30}
@@ -271,10 +251,11 @@ footer>a:last-child{font-size:13px}
 .s-star{width:92px;right:calc(5% + 236px);top:150px}
 .s-bow{width:96px;right:calc(5% - 36px);top:120px}
 .s-heart{width:104px;right:calc(5% + 200px);top:470px}
-.home-about{grid-template-columns:1fr;gap:40px}
-.code-card{rotate:0deg}
+.home-about-copy{column-gap:48px}
 }
 @media(max-width:760px){
+.home-about-copy{display:block}
+.home-about .craft-list{margin:28px 0 24px}
 .selected,.collection,.home-about,.about-story,.expertise,.reach{padding-block:44px}
 .selected{padding-top:12px}
 .hero-sticker{display:none}
@@ -285,7 +266,6 @@ footer>a:last-child{font-size:13px}
 .eyebrow,.card-meta{font-size:10px}
 .card-copy p{font-size:14px}
 .craft-list li{grid-template-columns:1fr;gap:2px}
-.code-card pre{font-size:12px;padding:18px 18px 12px}
 .end-note{padding:38px 26px 34px;border-radius:30px}
 .end-note>a{font-size:clamp(38px,11vw,52px);padding-right:0}
 .end-note>a b{position:static;display:inline-grid;translate:none;width:46px;height:46px;vertical-align:middle;margin-left:6px}
